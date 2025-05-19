@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Layout from "@/components/Layout"; // Header/Footer included
-import suportimg1 from "@/assets/Images/suportimg1.jpg"; // <-- यही path रख, अगर src/assets/Images/ में है
+//import suportimg1 from "@/assets/Images/suportimg1.jpg"; // <-- यही path रख, अगर src/assets/Images/ में है
 
 const fontLink = "https://fonts.cdnfonts.com/css/glacial-indifference-2";
 
