@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import chat2Img from "../assets/images/chat2.png";
 import chat3Img from "../assets/images/chat3.png";
@@ -14,7 +14,8 @@ function ChatWidget() {
   const [showPopup, setShowPopup] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-  // Use imported images
+  const optionsContainerRef = useRef(null);
+
   const images = [chat2Img, chat3Img];
 
   useEffect(() => {
@@ -42,9 +43,6 @@ function ChatWidget() {
         from { transform: scale(0.9); opacity: 0; }
         to { transform: scale(1); opacity: 1; }
       }
-      .chat-appear {
-        animation: slideInUp 0.4s ease-out;
-      }
     `;
     document.head.appendChild(style);
     return () => document.head.removeChild(style);
@@ -68,16 +66,32 @@ function ChatWidget() {
     overflow: "hidden",
     backgroundColor: "transparent",
     opacity: 0,
+    transform: "none",
+    left: "auto",
   });
 
   useEffect(() => {
-    setWidgetStyle(prev => ({
-      ...prev,
-      bottom: isMobile ? "70px" : "70px",
-      right: isMobile ? "10px" : "20px",
-      width: isMobile ? "65px" : "100px",
-      height: isMobile ? "65px" : "100px",
-    }));
+    if (isMobile) {
+      setWidgetStyle(prev => ({
+        ...prev,
+        bottom: "50px",
+        right: "20px",
+        left: "auto",
+        width: "60px",
+        height: "60px",
+        transform: "none",
+      }));
+    } else {
+      setWidgetStyle(prev => ({
+        ...prev,
+        bottom: "70px",
+        right: "20px",
+        left: "auto",
+        width: "100px",
+        height: "100px",
+        transform: "none",
+      }));
+    }
   }, [isMobile]);
 
   useEffect(() => {
@@ -114,7 +128,17 @@ function ChatWidget() {
   }, []);
 
   const toggleChat = () => setIsOpen(!isOpen);
-  const toggleOptions = () => setShowAllOptions(!showAllOptions);
+
+  const toggleOptions = () => {
+    setShowAllOptions(prev => {
+      setTimeout(() => {
+        if (optionsContainerRef.current) {
+          optionsContainerRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 100);
+      return !prev;
+    });
+  };
   const toggleMenu = () => setShowMenu(!showMenu);
   const toggleLanguage = () => setIsHindi(!isHindi);
   const selectLanguage = (lang) => {
@@ -124,7 +148,6 @@ function ChatWidget() {
 
   const handleSendMessage = () => {
     if (userMessage.trim()) {
-      // Your message sending logic here
       setUserMessage("");
     }
   };
@@ -133,95 +156,86 @@ function ChatWidget() {
     ? ["बीमा करवाएं", "पूर्व-अनुमोदित ऑफ़र", "त्वरित भुगतान", "प्रश्न पूछें", "स्वंय सेवा", "ऋण के लिए आवेदन करें", "ईएमआई कैलकुलेटर"]
     : ["Apply for Loan", "Pre Approved Offer", "Get Insured", "Self-Service", "Quick Pay", "Ask a Question", "EMI Calculator"];
 
-  const menuOptions = isHindi
-    ? ["बीमा करवाएं", "प्रश्न पूछें", "ऋण के लिए आवेदन करें", "ईएमआई कैलकुलेटर", "स्वंय सेवा", "ओवरड्यू ईएमआई शीघ्र भुगतान", "बातचीत रद्द करें", "पूर्व-अनुमोदित ऑफ़र", "खाता विवरण"]
-    : ["Apply for Loan", "EMI Calculator", "Self-Service", "Overdue EMI Quick Pay", "Ask a Question", "Cancel Conversation", "Get Insured", "Pre Approved Personal Loan", "Account Details"];
-
   const welcomeText = isHindi
     ? "नमस्ते! मैं श्रेय हूं, एक वर्चुअल असिस्टेंट जो आपकी उपभोक्ता ऋण आवेदन प्रक्रिया में आपकी सहायता कर सकता हूं..."
     : "Hi! I am Shrey, a virtual assistant that can help you with your Consumer Loans application process...";
 
   return (
     <div style={{ fontFamily: "'Glacial Indifference', sans-serif" }}>
-      {!isOpen && (
-        <>
-          {showPopup && (
-            <div
-              className="shadow-sm"
-              style={{
-                position: "fixed",
-                bottom: isMobile ? "155px" : "195px",
-                right: isMobile ? "16px" : "40px",
-                fontFamily: "glacial indifference",
-                fontWeight: "bold",
-                backgroundColor: "#fff",
-                borderRadius: "12px 12px 0px 12px",
-                padding: isMobile ? "8px 10px" : "12px 16px",
-                maxWidth: isMobile ? "170px" : "250px",
-                fontSize: isMobile ? "11px" : "14px",
-                zIndex: 10001,
-                animation: "fadeSlide 0.8s ease-in-out",
-              }}
-            >
-              <div
-                style={{
-                  position: "absolute",
-                  bottom: isMobile ? "-11px" : "-15px",
-                  right: "0px",
-                  width: 0,
-                  height: 0,
-                  borderLeft: isMobile ? "12px solid transparent" : "15px solid transparent",
-                  borderRight: isMobile ? "12px solid transparent" : "15px solid transparent",
-                  borderTop: isMobile ? "12px solid #fff" : "15px solid #fff",
-                }}
-              />
-              <div className="d-flex justify-content-between align-items-center">
-                <span>Hello, I’m Shrey. How can I assist you today?</span>
-                <button onClick={() => setShowPopup(false)} className="border-0 bg-transparent p-0 ms-2">
-                  ✕
-                </button>
-              </div>
-            </div>
-          )}
-
-          <div style={widgetStyle} onClick={toggleChat}>
-            <img
-              src={images[(currentImageIndex + images.length) % images.length]}
-              alt="Shrey Assistant"
-              className="img-fluid"
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                transition: "opacity 1s ease-in-out",
-              }}
-            />
-            <style>{`
-              @keyframes slideIn {
-                0% { transform: translateX(100px); opacity: 0; }
-                100% { transform: translateX(0); opacity: 1; }
-              }
-              @keyframes floatIcon {
-                0%, 100% { transform: translateY(0); }
-                50% { transform: translateY(-10px); }
-              }
-              @keyframes fadeSlide {
-                0% { opacity: 0; transform: translateY(10px); }
-                100% { opacity: 1; transform: translateY(0); }
-              }
-            `}</style>
+      {/* Popup Message */}
+      {!isOpen && showPopup && (
+        <div
+          className="shadow-sm"
+          style={{
+            position: "fixed",
+            bottom: isMobile ? "125px" : "200px",
+            right: isMobile ? "25px" : "34px",
+            backgroundColor: "#fff",
+            borderRadius: "12px 12px 0px 12px",
+            padding: isMobile ? "8px 10px" : "12px 16px",
+            maxWidth: isMobile ? "170px" : "250px",
+            fontSize: isMobile ? "11px" : "14px",
+            zIndex: 10001,
+            animation: "fadeSlide 0.8s ease-in-out",
+          }}
+        >
+          {/* Arrow */}
+          <div
+            style={{
+              position: "absolute",
+              bottom: "-12px",
+              right: "0px",
+              borderLeft: "12px solid transparent",
+              borderRight: "12px solid transparent",
+              borderTop: "12px solid #fff",
+            }}
+          />
+          <div className="d-flex justify-content-between align-items-center">
+            <span>Hello, I’m Shrey. How can I assist you today?</span>
+            <button onClick={() => setShowPopup(false)} className="border-0 bg-transparent p-0 ms-2">✕</button>
           </div>
-        </>
+        </div>
       )}
 
-      {/* Chat Box */}
+      {/* Floating Widget Icon */}
+      {!isOpen && (
+        <div style={widgetStyle} onClick={toggleChat}>
+          <img
+            src={images[(currentImageIndex + images.length) % images.length]}
+            alt="Shrey Assistant"
+            className="img-fluid"
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              transition: "opacity 1s ease-in-out",
+            }}
+          />
+          <style>{`
+            @keyframes slideIn {
+              0% { transform: translateX(100px); opacity: 0; }
+              100% { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes floatIcon {
+              0%, 100% { transform: translateY(0); }
+              50% { transform: translateY(-10px); }
+            }
+            @keyframes fadeSlide {
+              0% { opacity: 0; transform: translateY(10px); }
+              100% { opacity: 1; transform: translateY(0); }
+            }
+          `}</style>
+        </div>
+      )}
+
+      {/* Chat Window */}
       {isOpen && (
         <div
           className="card shadow-lg chat-widget chat-appear"
           style={{
             position: "fixed",
             bottom: "90px",
-            right: "20px",
+            right: "50px",
             width: "320px",
             maxHeight: "80vh",
             overflowY: "auto",
@@ -239,39 +253,19 @@ function ChatWidget() {
               borderTopRightRadius: "20px",
             }}
           >
-            <div className="d-flex align-items-center">
-              {/* You can add a logo or text here */}
-            </div>
+            <div className="d-flex align-items-center"></div>
             <button className="btn-close btn-close-white" onClick={toggleChat}></button>
           </div>
           <div className="card-body text-center">
-            <img
-              src={chat3Img}
-              alt="avatar"
-              width="60"
-              height="60"
-            />
-
+            <img src={chat3Img} alt="avatar" width="60" height="60" />
             {!languageSelected ? (
               <>
                 <div className="bg-light p-3 rounded mb-3 text-start">
                   <p className="mb-0">Hi! I'm Shrey, your assistant. Happy to help! Please choose your language below..</p>
                 </div>
                 <div className="p-3 border rounded mb-3 bg-white">
-                  <button
-                    className="btn w-100 mb-2"
-                    onClick={() => selectLanguage("en")}
-                    style={{ borderColor: "#0074d9", color: "#0074d9", fontWeight: "bold" }}
-                  >
-                    English
-                  </button>
-                  <button
-                    className="btn w-100"
-                    onClick={() => selectLanguage("hi")}
-                    style={{ borderColor: "#0074d9", color: "#0074d9", fontWeight: "bold" }}
-                  >
-                    हिन्दी
-                  </button>
+                  <button className="btn w-100 mb-2" onClick={() => selectLanguage("en")} style={{ borderColor: "#0074d9", color: "#0074d9", fontWeight: "bold" }}>English</button>
+                  <button className="btn w-100" onClick={() => selectLanguage("hi")} style={{ borderColor: "#0074d9", color: "#0074d9", fontWeight: "bold" }}>हिन्दी</button>
                 </div>
               </>
             ) : (
@@ -281,19 +275,14 @@ function ChatWidget() {
                     <p className="mb-0">{welcomeText}</p>
                   </div>
                 )}
-
                 {!showMenu && (
                   <>
                     <div className="d-flex justify-content-end mb-2">
-                      <button
-                        className="btn btn-outline-primary btn-sm"
-                        onClick={toggleOptions}
-                        style={{ background: "#0074d9", color: "white" }}
-                      >
+                      <button className="btn btn-outline-primary btn-sm" onClick={toggleOptions} style={{ background: "#0074d9", color: "white" }}>
                         {showAllOptions ? (isHindi ? "कम देखें" : "View Less") : (isHindi ? "और देखें" : "View More")}
                       </button>
                     </div>
-                    <div className="d-flex flex-wrap justify-content-center gap-2">
+                    <div ref={optionsContainerRef} className="d-flex flex-wrap justify-content-center gap-2">
                       {(showAllOptions ? options : options.slice(0, 4)).map((option, index) => (
                         <button
                           key={`${option}-${showAllOptions}`}
@@ -315,7 +304,6 @@ function ChatWidget() {
                     </div>
                   </>
                 )}
-
                 <div className="input-group mt-3">
                   <button className="btn btn-outline-warning" onClick={toggleMenu}>☰</button>
                   <input
@@ -326,72 +314,9 @@ function ChatWidget() {
                     onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
                     placeholder={isHindi ? "मैं आपकी क्या सहायता कर सकता हूं?" : "How may I help you?"}
                   />
-                  <button className="btn btn-outline-secondary" onClick={toggleLanguage}>
-                    {isHindi ? "EN" : "हिंदी"}
-                  </button>
-                  <button
-                    className="btn"
-                    onClick={handleSendMessage}
-                    style={{ backgroundColor: "#0074d9", color: "#fff" }}
-                  >
-                    ➤
-                  </button>
+                  <button className="btn btn-outline-secondary" onClick={toggleLanguage}>{isHindi ? "EN" : "हिंदी"}</button>
+                  <button className="btn" onClick={handleSendMessage} style={{ backgroundColor: "#0074d9", color: "#fff" }}>➤</button>
                 </div>
-
-                {showMenu && (
-                  <div className="mt-3 p-3 rounded border bg-white text-start overflow-auto menu-slide" style={{ maxHeight: "300px" }}>
-                    {menuOptions.map((option, index) => (
-                      <div key={index} className="d-flex justify-content-between align-items-center border-bottom py-2 menu-item">
-                        <span>{option}</span>
-                        <span style={{ color: "#0074d9" }}>&gt;</span>
-                        <style>
-                          {`
-                            .menu-item {
-                              position: relative;
-                              transition: all 0.4s ease;
-                              padding: 10px 20px;
-                              text-align: left;
-                              background-color: white;
-                              border-top: 1px solid transparent;
-                              border-right: 1px solid transparent;
-                              border-bottom: 1px solid transparent;
-                              border-left: 1px solid transparent;
-                              border-radius: 8px;
-                              box-sizing: border-box;
-                            }
-                            .menu-item:hover {
-                              background-color: transparent !important;
-                              transform: scale(1.04);
-                              color: black !important;
-                            }
-                            .menu-item span {
-                              position: relative;
-                              z-index: 2;
-                              transition: all 0.4s ease-in-out;
-                            }
-                            .menu-arrow {
-                              transition: transform 0.4s ease, color 0.4s ease;
-                            }
-                            .menu-item:hover .menu-arrow {
-                              transform: rotate(90deg);
-                              color: white !important;
-                            }
-                            .menu-item-content {
-                              display: flex;
-                              justify-content: space-between;
-                              align-items: center;
-                              transition: all 0.4s ease;
-                            }
-                            .menu-item:hover .menu-item-content {
-                              justify-content: center;
-                              gap: 8px;
-                            }
-                          `}
-                        </style>
-                      </div>
-                    ))}
-                  </div>
-                )}
               </>
             )}
           </div>

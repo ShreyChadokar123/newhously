@@ -25,8 +25,8 @@ const menuItems = [
       { title: 'EMI Calculator', url: '/calculators/emi' },
       { title: 'Eligibility Calculator', url: '/calculators/eligibility' },
       { title: 'Foreclose Calculator', url: '/calculators/foreclose' },
-      { title: 'Balance Transfer Calculator', url: '/calculators/balance-transfer' },
-      { title: 'Pre-Payment Calculator', url: '/calculators/pre-payment' }
+      { title: 'Bal-Transfer Calculator', url: '/calculators/balance-transfer' },
+      { title: 'Pre-Pay Calculator', url: '/calculators/pre-payment' }
     ]
   },
   { title: 'Offers & Cashback', url: '/offers' },
@@ -73,14 +73,17 @@ const Navbar = () => {
 
   return (
     <>
-      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 
-        ${isScrolled ? 'bg-white shadow-md' : 'bg-transparent'}
-      `}>
-        <div className="container mx-auto px-4 flex justify-between items-center"
+      <header
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 
+          ${isScrolled ? 'bg-white shadow-md' : 'bg-transparent'}`}
+      >
+        <div
+          className="container mx-auto px-4 flex justify-between items-center"
           style={{
-            minHeight: isScrolled ? 64 : 80, // 64px on scroll, 80px otherwise
+            minHeight: isScrolled ? 64 : 80,
             transition: 'min-height 0.3s'
-          }}>
+          }}
+        >
           <Logo />
           {/* Desktop Menu */}
           <div className="hidden lg:flex gap-6 items-center" ref={menuRef}>
@@ -90,11 +93,13 @@ const Navbar = () => {
               return (
                 <div key={index} className="relative">
                   <button
-                    onClick={() => hasSubmenu ? setActiveDropdown(isOpen ? null : index) : handleNavigation(item.url)}
+                    onClick={() => (hasSubmenu ? setActiveDropdown(isOpen ? null : index) : handleNavigation(item.url))}
                     className="text-gray-700 font-medium hover:text-blue-600 transition flex items-center gap-1"
                   >
                     {item.title}
-                    {hasSubmenu && <ChevronDown className={`h-4 w-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} />}
+                    {hasSubmenu && (
+                      <ChevronDown className={`h-4 w-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+                    )}
                   </button>
                   {hasSubmenu && isOpen && (
                     <div className="absolute top-full left-0 mt-2 w-56 bg-white shadow-lg rounded-md z-30 animate-fade-in">
@@ -112,7 +117,9 @@ const Navbar = () => {
                 </div>
               );
             })}
-            <Button className="gradient-primary ml-2" size="sm">Apply Now</Button>
+            <Button className="gradient-primary ml-2" size="sm">
+              Apply Now
+            </Button>
           </div>
           {/* Hamburger */}
           <button className="lg:hidden text-gray-700" onClick={() => setIsMenuOpen(!isMenuOpen)}>
@@ -127,7 +134,7 @@ const Navbar = () => {
           <div className="fixed inset-0 z-40 bg-black/30"></div>
           <div
             ref={menuRef}
-            className="fixed top-[64px] left-0 right-0 z-50 bg-white shadow-t border-t border-gray-200"
+            className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white shadow-t border-t border-gray-200 animate-slide-up"
           >
             <div className="flex justify-end px-4 pt-2">
               <button onClick={() => setIsMenuOpen(false)} className="text-gray-600 hover:text-red-500">
@@ -141,7 +148,7 @@ const Navbar = () => {
                 return (
                   <div key={index} className="relative">
                     <button
-                      onClick={() => hasSubmenu ? toggleDropdown(index) : handleNavigation(item.url)}
+                      onClick={() => (hasSubmenu ? toggleDropdown(index) : handleNavigation(item.url))}
                       className="px-3 py-2 text-sm text-gray-700 rounded-full bg-gray-100 hover:bg-blue-100 flex items-center gap-1"
                     >
                       {item.title}
@@ -152,7 +159,8 @@ const Navbar = () => {
                       )}
                     </button>
                     {hasSubmenu && isOpen && (
-                      <div className="absolute left-0 mt-2 w-48 bg-white shadow-md rounded-lg z-50 animate-fade-in">
+                      // **Changed from mt-2 (below) to bottom-full mb-2 (above) for submenu to open UP**
+                      <div className="absolute left-0 bottom-full mb-2 w-48 bg-white shadow-md rounded-lg z-50 animate-fade-in">
                         {item.submenu.map((subItem, subIndex) => (
                           <button
                             key={subIndex}
@@ -171,6 +179,24 @@ const Navbar = () => {
           </div>
         </>
       )}
+
+      {/* Inline CSS for animation */}
+      <style>{`
+        @keyframes slide-up {
+          from {
+            transform: translateY(100%);
+            opacity: 0;
+          }
+          to {
+            transform: translateY(0%);
+            opacity: 1;
+          }
+        }
+
+        .animate-slide-up {
+          animation: slide-up 0.3s ease-out;
+        }
+      `}</style>
     </>
   );
 };

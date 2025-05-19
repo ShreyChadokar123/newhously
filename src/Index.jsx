@@ -11,7 +11,7 @@ import AppDownload from './components/AppDownload/AppDownload';
 import HappyCustomers from './components/HappyCustomers/HappyCustomers';
 import LoanCalculators from './components/LoanCalculators/LoanCalculators';
 import HappyCustomerStats from './components/HappyCustomerStats';
-import TalkToUs from './components/TalkToUs';
+// import TalkToUs from './components/TalkToUs';
 import ChatWidth from'./components/ChatWidget'
 
 const Index = () => {
@@ -75,9 +75,9 @@ const Index = () => {
       <div className="animate-on-scroll">
         <HappyCustomers/>
       </div>
-      <div className="animate-on-scroll">
+      {/* <div className="animate-on-scroll">
         <TalkToUs/>
-      </div>
+      </div> */}
       <div className="animate-on-scroll">
         <ChatWidth/>
       </div>
