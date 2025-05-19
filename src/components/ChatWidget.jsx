@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import chat2Img from "../assets/images/chat2.png";
-import chat3Img from "../assets/images/chat3.png";
+// import chat2Img from "../assets/images/chat2.png";
+// import chat3Img from "../assets/images/chat3.png";
 
 function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
