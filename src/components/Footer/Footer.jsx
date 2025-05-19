@@ -62,15 +62,15 @@ const Footer = () => {
               <h3 className="text-lg font-bold mb-4">Support</h3>
               <ul className="space-y-3">
                 <li><Link to="/faqs" className="text-gray-400 hover:text-teal-400">FAQs</Link></li>
-                <li><Link to="/support" className="text-gray-400 hover:text-teal-400">Customer Support</Link></li>
-                <li><Link to="/bank-partners" className="text-gray-400 hover:text-teal-400">Bank Partner Details</Link></li>
+                <li><Link to="/customer" className="text-gray-400 hover:text-teal-400">Customer Support</Link></li>
+                <li><Link to="/bank" className="text-gray-400 hover:text-teal-400">Bank Partner Details</Link></li>
               </ul>
             </div>
             <div className="flex-1">
               <h3 className="text-lg font-bold mb-4">Join Us</h3>
               <ul className="space-y-3">
                 <li><Link to="/refer" className="text-gray-400 hover:text-teal-400">Refer & Earn</Link></li>
-                <li><Link to="/partner" className="text-gray-400 hover:text-teal-400">Join as Business Partner</Link></li>
+                <li><Link to="/join" className="text-gray-400 hover:text-teal-400">Join as Business Partner</Link></li>
               </ul>
             </div>
           </div>

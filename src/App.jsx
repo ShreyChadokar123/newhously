@@ -13,8 +13,7 @@ import HomeLoanPage from "./pages/services/HomeLoanPage";
 import PropertyLoanPage from "./pages/services/PropertyLoanPage";
 import BalanceTransferPage from "./pages/services/BalanceTransferPage";
 import BusinessLoanPage from "./pages/services/BusinessLoanPage";
-// import TermsAndConditions from "./pages/TermsAndConditions";
-// import PrivacyPolicy from "./pages/PrivacyPolicy";
+
 
 
 // Calculator Pages
@@ -29,11 +28,14 @@ import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
 import OffersPage from "./pages/OffersPage";
 import LoanServicesFooter from "./pages/LoanServicesFooter";
-// import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Disclaimer from "./pages/Disclaimer";
 import FAQPage from "./pages/FAQs";
+import CustomerSupport from "./CustomerSupport";
+import BankPartnerDetails from "./pages/BankPartnerDetails";
+import ReferAndEarn from "./pages/services/ReferAndEarn";
+import JoinAsPartner from "./pages/services/JoinAsPartner";
 
 const queryClient = new QueryClient();
 
@@ -68,6 +70,10 @@ const App = () => (
             <Route path="/privacy" element={<PrivacyPolicy/>} />
              <Route path="/disclaimer" element={<Disclaimer/>} />
                 <Route path="/faqs" element={<FAQPage/>} />
+                  <Route path="/customer" element={<CustomerSupport/>} />
+                  <Route path="/join" element={<JoinAsPartner/>} />
+                  <Route path="/bank" element={<BankPartnerDetails/>} />
+                  <Route path="/refer" element={<ReferAndEarn/>} />
 
 
           
