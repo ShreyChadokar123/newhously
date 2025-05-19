@@ -14,7 +14,7 @@ function ChatWidget() {
 
   const optionsContainerRef = useRef(null);
 
-  const images = ["/images/chat2.png", "/images/chat3.png"]; // Vercel-compatible (public folder)
+  const images = ["/image/chat2.png", "/image/chat3.png"]; // Vercel-compatible (public folder)
 
   useEffect(() => {
     const style = document.createElement("style");
@@ -218,7 +218,7 @@ function ChatWidget() {
             <button className="btn-close btn-close-white" onClick={toggleChat}></button>
           </div>
           <div className="card-body text-center">
-            <img src="/images/chat3.png" alt="avatar" width="60" height="60" />
+            <img src="/image/chat3.png" alt="avatar" width="60" height="60" />
             {!languageSelected ? (
               <>
                 <div className="bg-light p-3 rounded mb-3 text-start">
