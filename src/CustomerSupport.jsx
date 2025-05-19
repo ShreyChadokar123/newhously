@@ -1,8 +1,5 @@
 import React, { useState } from "react";
 import Layout from "@/components/Layout"; // Header/Footer included
-//import suportimg1 from "@/assets/Images/suportimg1.jpg"; // <-- यही path रख, अगर src/assets/Images/ में है
-
-const fontLink = "https://fonts.cdnfonts.com/css/glacial-indifference-2";
 
 const CustomerSupport = () => {
   const [formData, setFormData] = useState({
@@ -16,7 +13,6 @@ const CustomerSupport = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Simple email validation
   const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
   const handleSubmit = (e) => {
@@ -36,10 +32,10 @@ const CustomerSupport = () => {
 
   return (
     <Layout>
-      {/* Glacial Indifference Font Import */}
-      <link href={fontLink} rel="stylesheet" />
       <style>
         {`
+          @import url('https://fonts.cdnfonts.com/css/glacial-indifference-2');
+
           body, .customer-support-root {
             font-family: 'Glacial Indifference', sans-serif;
             background: #f8f9fa;
@@ -57,7 +53,6 @@ const CustomerSupport = () => {
         `}
       </style>
 
-      {/* 100% width gradient heading */}
       <div
         style={{
           width: "100vw",
@@ -78,43 +73,26 @@ const CustomerSupport = () => {
             fontFamily: "'Glacial Indifference', sans-serif",
           }}
         >
-          <h2
-            className="fw-bold mb-2"
-            style={{
-              fontSize: "2.4rem",
-              letterSpacing: "-1px",
-              fontWeight: 800,
-            }}
-          >
+          <h2 className="fw-bold mb-2" style={{ fontSize: "2.4rem", letterSpacing: "-1px", fontWeight: 800 }}>
             <span style={{ color: "#fff" }}>Customer </span>
             <span style={{ color: "#ffd700" }}>Support</span>
           </h2>
-          <div
-            style={{
-              color: "#e9efff",
-              fontSize: "1.09rem",
-              fontWeight: 400,
-              opacity: 0.93,
-              maxWidth: 650,
-              margin: "0 auto",
-            }}
-          >
+          <div style={{ color: "#e9efff", fontSize: "1.09rem", fontWeight: 400, opacity: 0.93, maxWidth: 650, margin: "0 auto" }}>
             We're here to help you! Contact the <b>HouslyFintech</b> support team for any assistance.
           </div>
         </section>
       </div>
 
-      {/* Open, No Card, No Box, Just Content */}
       <div className="container py-5" style={{
         fontFamily: "'Glacial Indifference', sans-serif",
         background: "#f8f9fa",
         maxWidth: "1280px",
       }}>
         <div className="row gx-5 gy-3 align-items-center justify-content-center" style={{ margin: "0" }}>
-          {/* Image */}
+          {/* Image from public folder */}
           <div className="col-md-6 text-center" style={{ marginBottom: "1rem", padding: "0" }}>
             <img
-              src={suportimg1}
+              src="/Images/suportimg1.jpg"
               alt="Customer Support"
               className="img-fluid support-img"
               style={{
@@ -129,17 +107,10 @@ const CustomerSupport = () => {
             />
           </div>
 
-          {/* Form - open, no card */}
+          {/* Form */}
           <div className="col-md-6" style={{ marginTop: "5px" }}>
             <form onSubmit={handleSubmit} className="support-form" style={{ background: "none" }}>
-              <h5
-                className="mb-3 fw-bold text-center"
-                style={{
-                  color: "#0074d9",
-                  fontSize: "1.2rem",
-                  letterSpacing: "0.2px",
-                }}
-              >
+              <h5 className="mb-3 fw-bold text-center" style={{ color: "#0074d9", fontSize: "1.2rem", letterSpacing: "0.2px" }}>
                 Contact Us
               </h5>
               <div className="mb-2">
@@ -194,14 +165,7 @@ const CustomerSupport = () => {
                 Submit
               </button>
               {submitted && (
-                <div
-                  className="alert alert-success mt-2"
-                  style={{
-                    borderRadius: "6px",
-                    fontSize: "0.95rem",
-                    marginBottom: 0,
-                  }}
-                >
+                <div className="alert alert-success mt-2" style={{ borderRadius: "6px", fontSize: "0.95rem", marginBottom: 0 }}>
                   Thank you! We'll get back to you soon.
                 </div>
               )}
@@ -213,13 +177,8 @@ const CustomerSupport = () => {
         <div className="text-center mt-5 mb-2">
           <p style={{ fontSize: "1rem", color: "#666" }}>
             Need urgent help? Call us at{" "}
-            <span style={{ color: "#0074d9", fontWeight: "bold" }}>
-              +91 98765 43210
-            </span>{" "}
-            or email{" "}
-            <span style={{ color: "#0074d9", fontWeight: "bold" }}>
-              support@houslyfintech.com
-            </span>
+            <span style={{ color: "#0074d9", fontWeight: "bold" }}>+91 98765 43210</span> or email{" "}
+            <span style={{ color: "#0074d9", fontWeight: "bold" }}>support@houslyfintech.com</span>
           </p>
         </div>
       </div>
