@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-// import chat2Img from "../assets/images/chat2.png";
-// import chat3Img from "../assets/images/chat3.png";
 
 function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,7 +14,7 @@ function ChatWidget() {
 
   const optionsContainerRef = useRef(null);
 
-  const images = [chat2Img, chat3Img];
+  const images = ["/images/chat2.png", "/images/chat3.png"];
 
   useEffect(() => {
     const style = document.createElement("style");
@@ -71,35 +69,23 @@ function ChatWidget() {
   });
 
   useEffect(() => {
-    if (isMobile) {
-      setWidgetStyle(prev => ({
-        ...prev,
-        bottom: "50px",
-        right: "20px",
-        left: "auto",
-        width: "60px",
-        height: "60px",
-        transform: "none",
-      }));
-    } else {
-      setWidgetStyle(prev => ({
-        ...prev,
-        bottom: "70px",
-        right: "20px",
-        left: "auto",
-        width: "100px",
-        height: "100px",
-        transform: "none",
-      }));
-    }
+    setWidgetStyle(prev => ({
+      ...prev,
+      bottom: isMobile ? "50px" : "70px",
+      right: "20px",
+      left: "auto",
+      width: isMobile ? "60px" : "100px",
+      height: isMobile ? "60px" : "100px",
+      transform: "none",
+    }));
   }, [isMobile]);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentImageIndex((prev) => (prev + 1) % images.length);
+      setCurrentImageIndex(prev => (prev + 1) % images.length);
     }, currentImageIndex === 1 ? 4500 : 1500);
     return () => clearInterval(interval);
-  }, [currentImageIndex, images.length]);
+  }, [currentImageIndex]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -139,6 +125,7 @@ function ChatWidget() {
       return !prev;
     });
   };
+
   const toggleMenu = () => setShowMenu(!showMenu);
   const toggleLanguage = () => setIsHindi(!isHindi);
   const selectLanguage = (lang) => {
@@ -147,9 +134,7 @@ function ChatWidget() {
   };
 
   const handleSendMessage = () => {
-    if (userMessage.trim()) {
-      setUserMessage("");
-    }
+    if (userMessage.trim()) setUserMessage("");
   };
 
   const options = isHindi
@@ -162,34 +147,27 @@ function ChatWidget() {
 
   return (
     <div style={{ fontFamily: "'Glacial Indifference', sans-serif" }}>
-      {/* Popup Message */}
       {!isOpen && showPopup && (
-        <div
-          className="shadow-sm"
-          style={{
-            position: "fixed",
-            bottom: isMobile ? "125px" : "200px",
-            right: isMobile ? "25px" : "34px",
-            backgroundColor: "#fff",
-            borderRadius: "12px 12px 0px 12px",
-            padding: isMobile ? "8px 10px" : "12px 16px",
-            maxWidth: isMobile ? "170px" : "250px",
-            fontSize: isMobile ? "11px" : "14px",
-            zIndex: 10001,
-            animation: "fadeSlide 0.8s ease-in-out",
-          }}
-        >
-          {/* Arrow */}
-          <div
-            style={{
-              position: "absolute",
-              bottom: "-12px",
-              right: "0px",
-              borderLeft: "12px solid transparent",
-              borderRight: "12px solid transparent",
-              borderTop: "12px solid #fff",
-            }}
-          />
+        <div className="shadow-sm" style={{
+          position: "fixed",
+          bottom: isMobile ? "125px" : "200px",
+          right: isMobile ? "25px" : "34px",
+          backgroundColor: "#fff",
+          borderRadius: "12px 12px 0px 12px",
+          padding: isMobile ? "8px 10px" : "12px 16px",
+          maxWidth: isMobile ? "170px" : "250px",
+          fontSize: isMobile ? "11px" : "14px",
+          zIndex: 10001,
+          animation: "fadeSlide 0.8s ease-in-out",
+        }}>
+          <div style={{
+            position: "absolute",
+            bottom: "-12px",
+            right: "0px",
+            borderLeft: "12px solid transparent",
+            borderRight: "12px solid transparent",
+            borderTop: "12px solid #fff",
+          }} />
           <div className="d-flex justify-content-between align-items-center">
             <span>Hello, I’m Shrey. How can I assist you today?</span>
             <button onClick={() => setShowPopup(false)} className="border-0 bg-transparent p-0 ms-2">✕</button>
@@ -197,7 +175,6 @@ function ChatWidget() {
         </div>
       )}
 
-      {/* Floating Widget Icon */}
       {!isOpen && (
         <div style={widgetStyle} onClick={toggleChat}>
           <img
@@ -212,52 +189,36 @@ function ChatWidget() {
             }}
           />
           <style>{`
-            @keyframes slideIn {
-              0% { transform: translateX(100px); opacity: 0; }
-              100% { transform: translateX(0); opacity: 1; }
-            }
-            @keyframes floatIcon {
-              0%, 100% { transform: translateY(0); }
-              50% { transform: translateY(-10px); }
-            }
-            @keyframes fadeSlide {
-              0% { opacity: 0; transform: translateY(10px); }
-              100% { opacity: 1; transform: translateY(0); }
-            }
+            @keyframes slideIn { 0% { transform: translateX(100px); opacity: 0; } 100% { transform: translateX(0); opacity: 1; } }
+            @keyframes floatIcon { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+            @keyframes fadeSlide { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
           `}</style>
         </div>
       )}
 
-      {/* Chat Window */}
       {isOpen && (
-        <div
-          className="card shadow-lg chat-widget chat-appear"
-          style={{
-            position: "fixed",
-            bottom: "90px",
-            right: "50px",
-            width: "320px",
-            maxHeight: "80vh",
-            overflowY: "auto",
-            zIndex: 9999,
-            borderRadius: "20px",
-            backgroundColor: "#fff",
-            border: "1px solid #dee2e6",
-          }}
-        >
-          <div
-            className="card-header text-white d-flex justify-content-between align-items-center"
-            style={{
-              backgroundColor: "#0074d9",
-              borderTopLeftRadius: "20px",
-              borderTopRightRadius: "20px",
-            }}
-          >
+        <div className="card shadow-lg chat-widget chat-appear" style={{
+          position: "fixed",
+          bottom: "90px",
+          right: "50px",
+          width: "320px",
+          maxHeight: "80vh",
+          overflowY: "auto",
+          zIndex: 9999,
+          borderRadius: "20px",
+          backgroundColor: "#fff",
+          border: "1px solid #dee2e6",
+        }}>
+          <div className="card-header text-white d-flex justify-content-between align-items-center" style={{
+            backgroundColor: "#0074d9",
+            borderTopLeftRadius: "20px",
+            borderTopRightRadius: "20px",
+          }}>
             <div className="d-flex align-items-center"></div>
             <button className="btn-close btn-close-white" onClick={toggleChat}></button>
           </div>
           <div className="card-body text-center">
-            <img src={chat3Img} alt="avatar" width="60" height="60" />
+            <img src="/images/chat3.png" alt="avatar" width="60" height="60" />
             {!languageSelected ? (
               <>
                 <div className="bg-light p-3 rounded mb-3 text-start">
@@ -271,12 +232,10 @@ function ChatWidget() {
             ) : (
               <>
                 {!showMenu && (
-                  <div className="bg-light p-3 rounded mb-3 text-start">
-                    <p className="mb-0">{welcomeText}</p>
-                  </div>
-                )}
-                {!showMenu && (
                   <>
+                    <div className="bg-light p-3 rounded mb-3 text-start">
+                      <p className="mb-0">{welcomeText}</p>
+                    </div>
                     <div className="d-flex justify-content-end mb-2">
                       <button className="btn btn-outline-primary btn-sm" onClick={toggleOptions} style={{ background: "#0074d9", color: "white" }}>
                         {showAllOptions ? (isHindi ? "कम देखें" : "View Less") : (isHindi ? "और देखें" : "View More")}
